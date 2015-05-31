@@ -12,7 +12,7 @@ app.set('env', 'development');
 
 switch(app.get('env')){
     case 'development':
-        mongoose.connect('mongodb://localhost');
+        mongoose.connect(credentials.mongo.development.connectionString);
         break;
     case 'production':
         mongoose.connect(credentials.mongo.production.connectionString);
