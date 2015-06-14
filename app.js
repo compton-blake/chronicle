@@ -21,9 +21,29 @@ switch(app.get('env')){
         throw new Error('Unknown execution environment: ' + app.get('env'));
 };
 
+// set up handlebars view engine
+var handlebars = require('express3-handlebars').create({
+    defaultLayout:'main',
+    helpers: {
+        section: function(name, options){
+            if(!this._sections) this._sections = {};
+            this._sections[name] = options.fn(this);
+            return null;
+        }
+    }
+});
 
-app.use(express.static(__dirname));
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
 
+// Static Assets to be served
+app.use(express.static(__dirname + '/static'));
+app.use(express.static(__dirname + '/templates'));
+app.use(express.static(__dirname + '/app'));
+
+app.get('/', function(req, res) {
+    res.render('login');
+});
 
 
 // Server
